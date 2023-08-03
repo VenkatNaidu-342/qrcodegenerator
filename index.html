@@ -75,8 +75,30 @@ document.addEventListener("DOMContentLoaded", function () {
     qrcode.makeCode(inputValue);
   }
 
-  // Add an event listener to the "Generate QR Code" button
   document.querySelector("#generateButton").addEventListener("click", generateQr);
+
+  document.querySelector("#downloadButton").addEventListener("click", function () {
+    var qrCodeImage = document.querySelector(".qrcode img");
+    var canvas = document.createElement('canvas');
+    canvas.width = qrCodeImage.width;
+    canvas.height = qrCodeImage.height;
+    var context = canvas.getContext('2d');
+    context.drawImage(qrCodeImage, 0, 0);
+
+    var a = document.createElement('a');
+    a.download = 'qrcode.png';
+    a.href = canvas.toDataURL('image/png');
+    a.click();
+  });
+
+
+  document.querySelector("#shareButton").addEventListener("click", function () {
+    var qrCodeImage = document.querySelector(".qrcode img");
+    var qrCodeDataURL = qrCodeImage.src;
+
+    
+    console.log("Share QR Code:", qrCodeDataURL);
+  });
 });
 </script>
 </head>
@@ -85,9 +107,11 @@ document.addEventListener("DOMContentLoaded", function () {
   <div class="box">
     <h1>QR Code Generator</h1>
     <input type="text" id="inputText" placeholder="Paste an URL or enter text, then press enter"/>
-    <button id="generateButton">Generate QR Code</button>
+    <button id="generateButton">Generate QR Code</button><br>
     <hr>
-    <div class="qrcode"></div>
+    <div class="qrcode"></div><br><br>
+    <button id="downloadButton">Download</button><br><br>
+    <!-- <button id="shareButton">Share</button> -->
   </div>
 </div>
 </body>
